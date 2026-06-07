@@ -1,0 +1,38 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      args:
+        - USERNAME=${USER:?err}
+        - USER_UID=${COMPOSE_USER_ID:-1000}
+        - USER_GID=${COMPOSE_GROUP_ID:-1000}
+        - CLAUDE_CODE_VERSION=latest
+    environment:
+      - ANTHROPIC_API_KEY
+      - PGHOST=db.example.org
+      - PGDATABASE=raceform
+      - PGUSER=analyst
+      - PGPASSWORD=${ANALYST_PASSWORD}
+    command: sleep infinity
+    volumes:
+      - type: bind
+        source: ../
+        target: /home/$USER/nl2sql-example
+        consistency: consistent
+      - type: volume
+        source: claude-code
+        target: /home/$USER/.claude
+  postgres:
+    image: postgres:18.4-trixie@sha256:8ff36f3c66371cba71d20ceedccfc3de9669a68737607888c4ef0af93abe8e39
+    hostname: db.example.org
+    shm_size: 256m
+    volumes:
+      - type: volume
+        source: postgresql
+        target: /var/lib/postgresql
+
+volumes:
+  claude-code:
+  postgresql:
+    name: ${POSTGRESQL_DATA_VOLUME}
+    external: true
