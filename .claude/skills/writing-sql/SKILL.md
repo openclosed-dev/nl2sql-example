@@ -1,6 +1,7 @@
 ---
 name: writing-sql
-description: Writing SQL statements
+description: |
+  How to create SQL statements to query the horse racing database.
 ---
 
 ## SQL
@@ -15,4 +16,6 @@ All schema objects are defined in the schema `raceform`.
 
 See table definitions in the file `03-schema-raceform.sql`
 in this directory.
-Comments within the file are important and should not be ignored.
+
+The comments in the file contain explanations about tables and columns.
+Take these explanations into careful consideration when creating SQL statements.
