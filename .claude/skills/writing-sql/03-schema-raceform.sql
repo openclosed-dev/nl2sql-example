@@ -103,6 +103,16 @@ CREATE TABLE raceform.race(
   race_name TEXT NOT NULL,
   -- The type of the race.
   race_type VARCHAR(8) NOT NULL,
+  -- The class of the race.
+  race_class INTEGER,
+  -- The level for pattern races, given by Pattern Committee.
+  -- Possible values are:
+  -- * `Group 1`, `Group 2`, `Group 3`
+  -- * `Grade 1`, `Grade 2`, `Grade 3`
+  -- * `Grade A`, `Grade B`, `Grade C`, only for Irish handicapping races
+  -- * `Listed`: candidates for group/grade levels.
+  -- `NULL` for lower levels than those mentioned above.
+  race_level VARCHAR(8),
   -- The distance run by horses in the race.
   distance TEXT NOT NULL,
   -- The grand condition.
@@ -112,7 +122,8 @@ CREATE TABLE raceform.race(
 
   PRIMARY KEY (race_id),
   FOREIGN KEY (racecourse_id) REFERENCES raceform.racecourse(racecourse_id),
-  FOREIGN KEY (race_type) REFERENCES raceform.race_type(race_type)
+  FOREIGN KEY (race_type) REFERENCES raceform.race_type(race_type),
+  CHECK (1 <= race_class AND race_class <= 7)
 );
 
 -- Horses that participated in races.
